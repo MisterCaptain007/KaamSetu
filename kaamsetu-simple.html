@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KaamSetu</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700;900&family=Noto+Sans+Devanagari:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Noto Sans', 'Noto Sans Devanagari', sans-serif;
+  background: #F5F5F0;
+  color: #1A1A1A;
+  min-height: 100vh;
+}
+
+/* ── TOP BAR ── */
+.topbar {
+  background: #1A1A1A;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  position: sticky; top: 0; z-index: 100;
+}
+.logo {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+.logo span { color: #FF6B00; }
+
+.lang-row { display: flex; gap: 6px; }
+.lang-pill {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 2px solid #444;
+  background: transparent;
+  color: #aaa;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.lang-pill.active {
+  background: #FF6B00;
+  border-color: #FF6B00;
+  color: #fff;
+}
+
+/* ── HOME SCREEN ── */
+#screen-home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 20px 40px;
+  min-height: calc(100vh - 56px);
+}
+
+.welcome-text {
+  font-size: 1.05rem;
+  color: #666;
+  margin-bottom: 6px;
+  text-align: center;
+}
+.main-title {
+  font-size: clamp(1.6rem, 5vw, 2.2rem);
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+.main-title span { color: #FF6B00; }
+
+.sub-title {
+  font-size: 1rem;
+  color: #666;
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+/* BIG ROLE CARDS */
+.role-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 420px;
+  margin-bottom: 36px;
+}
+
+.role-card {
+  border: none;
+  border-radius: 20px;
+  padding: 28px 24px;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: transform 0.15s, box-shadow 0.15s;
+  width: 100%;
+  font-family: inherit;
+}
+.role-card:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.12); }
+.role-card:active { transform: scale(0.98); }
+
+.role-card.worker { background: #1A1A1A; color: #fff; }
+.role-card.contractor { background: #FF6B00; color: #fff; }
+
+.role-icon { font-size: 3rem; flex-shrink: 0; }
+.role-text-block {}
+.role-label {
+  font-size: 1.5rem;
+  font-weight: 900;
+  display: block;
+  margin-bottom: 4px;
+}
+.role-desc {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  line-height: 1.4;
+}
+
+/* STATS ROW */
+.stats-row {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  max-width: 420px;
+}
+.stat-box {
+  flex: 1;
+  background: #fff;
+  border-radius: 14px;
+  padding: 16px 12px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.stat-num {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #FF6B00;
+  display: block;
+}
+.stat-lbl {
+  font-size: 0.75rem;
+  color: #888;
+  margin-top: 2px;
+}
+
+/* ── SCREENS ── */
+.screen { display: none; padding: 0 0 60px; }
+.screen.active { display: block; }
+
+/* BACK BUTTON */
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 20px;
+  background: transparent;
+  border: none;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1A1A1A;
+  cursor: pointer;
+  font-family: inherit;
+}
+.back-btn:hover { color: #FF6B00; }
+
+/* SCREEN HEADER */
+.screen-header {
+  padding: 0 20px 20px;
+  border-bottom: 3px solid #eee;
+  margin-bottom: 24px;
+}
+.screen-header-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+.screen-icon { font-size: 2rem; }
+.screen-title {
+  font-size: 1.6rem;
+  font-weight: 900;
+}
+.screen-sub { font-size: 0.9rem; color: #777; }
+
+/* ── WORKER SCREEN ── */
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #999;
+  text-transform: uppercase;
+  margin: 0 20px 12px;
+}
+
+/* Skill filter chips */
+.chip-row {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 0 20px 16px;
+  scrollbar-width: none;
+}
+.chip-row::-webkit-scrollbar { display: none; }
+.chip {
+  flex-shrink: 0;
+  padding: 10px 18px;
+  border-radius: 40px;
+  border: 2px solid #ddd;
+  background: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s;
+  font-family: inherit;
+  color: #333;
+}
+.chip:hover, .chip.selected {
+  background: #1A1A1A;
+  border-color: #1A1A1A;
+  color: #fff;
+}
+
+/* JOB CARDS */
+.jobs-list { padding: 0 20px; display: flex; flex-direction: column; gap: 14px; }
+
+.job-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  border: 2px solid transparent;
+  transition: border-color 0.15s;
+}
+.job-card:hover { border-color: #FF6B00; }
+
+.job-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+.job-name { font-size: 1.1rem; font-weight: 900; margin-bottom: 3px; }
+.job-company { font-size: 0.85rem; color: #777; }
+.urgency-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.urgency-badge.urgent { background: #FFF0E6; color: #FF6B00; }
+.urgency-badge.open { background: #E6F7EC; color: #1B8A3F; }
+
+.job-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.job-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #F8F8F6;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.detail-icon { font-size: 1.2rem; }
+.detail-text {}
+.detail-label { font-size: 0.7rem; color: #999; }
+.detail-val { font-size: 0.95rem; font-weight: 700; }
+
+.wage-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 2px solid #F0F0EC;
+}
+.wage-amount {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #1B8A3F;
+}
+.wage-per { font-size: 0.8rem; color: #999; font-weight: 400; }
+
+.apply-btn {
+  padding: 12px 24px;
+  background: #1A1A1A;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+.apply-btn:hover { background: #FF6B00; }
+
+/* ── CONTRACTOR SCREEN ── */
+.worker-category-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  padding: 0 20px;
+  margin-bottom: 28px;
+}
+
+.worker-cat-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 20px 16px;
+  text-align: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.15s;
+}
+.worker-cat-card:hover { border-color: #FF6B00; transform: translateY(-2px); }
+.worker-cat-card.selected { border-color: #FF6B00; background: #FFF5EE; }
+
+.cat-emoji { font-size: 2.5rem; margin-bottom: 8px; }
+.cat-name { font-size: 1rem; font-weight: 900; margin-bottom: 4px; }
+.cat-count { font-size: 0.85rem; color: #1B8A3F; font-weight: 700; }
+
+/* WORKER LIST */
+.worker-list { padding: 0 20px; display: flex; flex-direction: column; gap: 14px; }
+
+.worker-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  border: 2px solid transparent;
+  transition: border-color 0.15s;
+}
+.worker-card:hover { border-color: #FF6B00; }
+
+.worker-avatar-big {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: #F0F0EC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+.worker-info { flex: 1; }
+.worker-name-big { font-size: 1.1rem; font-weight: 900; margin-bottom: 2px; }
+.worker-skill-tag {
+  display: inline-block;
+  background: #FFF0E6;
+  color: #FF6B00;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.worker-meta { display: flex; gap: 12px; }
+.w-meta-item { font-size: 0.82rem; color: #777; display: flex; align-items: center; gap: 4px; }
+.avail-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #1B8A3F;
+  display: inline-block;
+}
+.contact-btn {
+  padding: 12px 18px;
+  background: #FF6B00;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.contact-btn:hover { background: #e05e00; }
+
+/* POST JOB BUTTON */
+.post-job-fab {
+  position: fixed;
+  bottom: 24px; right: 20px;
+  background: #FF6B00;
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  padding: 16px 24px;
+  font-size: 1rem;
+  font-weight: 900;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 20px rgba(255,107,0,0.4);
+  font-family: inherit;
+  z-index: 99;
+  transition: all 0.15s;
+}
+.post-job-fab:hover { background: #e05e00; transform: scale(1.04); }
+
+/* ── MODAL ── */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(4px);
+  align-items: flex-end;
+  justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal-sheet {
+  background: #fff;
+  border-radius: 24px 24px 0 0;
+  width: 100%;
+  max-width: 500px;
+  padding: 28px 24px 40px;
+  animation: slideUp 0.25s ease;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+@keyframes slideUp {
+  from { transform: translateY(60px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.sheet-handle {
+  width: 44px; height: 4px;
+  background: #ddd;
+  border-radius: 4px;
+  margin: 0 auto 20px;
+}
+.sheet-title { font-size: 1.4rem; font-weight: 900; margin-bottom: 20px; }
+
+.form-field { margin-bottom: 18px; }
+.form-field label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #666;
+  margin-bottom: 8px;
+}
+.form-field input, .form-field select {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 2px solid #E8E8E4;
+  background: #F8F8F6;
+  font-size: 1rem;
+  font-family: inherit;
+  color: #1A1A1A;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.form-field input:focus, .form-field select:focus { border-color: #FF6B00; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.sheet-submit {
+  width: 100%;
+  padding: 16px;
+  background: #FF6B00;
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  font-size: 1.1rem;
+  font-weight: 900;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+  margin-top: 8px;
+}
+.sheet-submit:hover { background: #e05e00; }
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 80px; left: 50%;
+  transform: translateX(-50%);
+  background: #1A1A1A;
+  color: #fff;
+  padding: 14px 24px;
+  border-radius: 40px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  z-index: 999;
+  animation: fadeUp 0.3s ease;
+  white-space: nowrap;
+}
+@keyframes fadeUp {
+  from { opacity:0; transform: translateX(-50%) translateY(10px); }
+  to   { opacity:1; transform: translateX(-50%) translateY(0); }
+}
+
+/* empty state */
+.empty-state { text-align: center; padding: 40px 20px; color: #aaa; }
+.empty-state div { font-size: 3rem; margin-bottom: 12px; }
+.empty-state p { font-size: 1rem; }
+
+/* DIVIDER */
+.divider { height: 8px; background: #EBEBEB; margin: 24px 0; }
+
+/* responsive max width */
+.screen, #screen-home { max-width: 500px; margin: 0 auto; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="logo">Kaam<span>Setu</span></div>
+  <div class="lang-row">
+    <button class="lang-pill active" onclick="setLang('en',this)">EN</button>
+    <button class="lang-pill" onclick="setLang('hi',this)">हिंदी</button>
+    <button class="lang-pill" onclick="setLang('mr',this)">मराठी</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     HOME SCREEN
+══════════════════════════════════════ -->
+<div id="screen-home" class="active">
+  <div style="height:28px"></div>
+  <p class="welcome-text" data-t="welcome">Welcome / स्वागत है</p>
+  <h1 class="main-title" data-t="mainTitle">काम चाहिए?<br><span>यहाँ मिलेगा।</span></h1>
+  <p class="sub-title" data-t="mainSub">आप कौन हैं? नीचे चुनें।</p>
+
+  <div class="role-cards">
+    <button class="role-card worker" onclick="showScreen('worker')">
+      <div class="role-icon">👷</div>
+      <div class="role-text-block">
+        <span class="role-label" data-t="iAmWorker">मैं मजदूर हूँ</span>
+        <span class="role-desc" data-t="workerDesc">नौकरी ढूंढें — आज का काम, आज की मजदूरी</span>
+      </div>
+    </button>
+
+    <button class="role-card contractor" onclick="showScreen('contractor')">
+      <div class="role-icon">🏗</div>
+      <div class="role-text-block">
+        <span class="role-label" data-t="iAmContractor">मैं ठेकेदार हूँ</span>
+        <span class="role-desc" data-t="contractorDesc">मजदूर ढूंढें — कुशल कामगार, तुरंत उपलब्ध</span>
+      </div>
+    </button>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-box">
+      <span class="stat-num">18K+</span>
+      <div class="stat-lbl" data-t="statWorkers">मजदूर</div>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num">3.4K+</span>
+      <div class="stat-lbl" data-t="statContractors">ठेकेदार</div>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num">12K+</span>
+      <div class="stat-lbl" data-t="statJobs">नौकरियां</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     WORKER SCREEN — Find Jobs
+══════════════════════════════════════ -->
+<div id="screen-worker" class="screen">
+  <button class="back-btn" onclick="showHome()">← <span data-t="back">वापस</span></button>
+
+  <div class="screen-header">
+    <div class="screen-header-inner">
+      <span class="screen-icon">👷</span>
+      <span class="screen-title" data-t="findJobs">नौकरियां देखें</span>
+    </div>
+    <p class="screen-sub" data-t="findJobsSub">अपना काम चुनें और Apply करें</p>
+  </div>
+
+  <!-- Skill filter -->
+  <p class="section-label" data-t="filterSkill">काम का प्रकार चुनें</p>
+  <div class="chip-row" id="skill-chips">
+    <button class="chip selected" onclick="filterJobs('all',this)"><span>🔍</span> <span data-t="all">सभी</span></button>
+    <button class="chip" onclick="filterJobs('mason',this)"><span>🧱</span> <span data-t="mason">राजमिस्त्री</span></button>
+    <button class="chip" onclick="filterJobs('electric',this)"><span>⚡</span> <span data-t="electric">बिजली</span></button>
+    <button class="chip" onclick="filterJobs('plumber',this)"><span>🔧</span> <span data-t="plumber">प्लंबर</span></button>
+    <button class="chip" onclick="filterJobs('paint',this)"><span>🎨</span> <span data-t="paint">पेंटर</span></button>
+    <button class="chip" onclick="filterJobs('carpenter',this)"><span>🪵</span> <span data-t="carpenter">बढ़ई</span></button>
+    <button class="chip" onclick="filterJobs('helper',this)"><span>💪</span> <span data-t="helper">हेल्पर</span></button>
+  </div>
+
+  <div class="divider"></div>
+
+  <p class="section-label" data-t="availableJobs">उपलब्ध नौकरियां</p>
+  <div class="jobs-list" id="jobs-list"></div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     CONTRACTOR SCREEN — Find Workers
+══════════════════════════════════════ -->
+<div id="screen-contractor" class="screen">
+  <button class="back-btn" onclick="showHome()">← <span data-t="back">वापस</span></button>
+
+  <div class="screen-header">
+    <div class="screen-header-inner">
+      <span class="screen-icon">🏗</span>
+      <span class="screen-title" data-t="findWorkers">मजदूर देखें</span>
+    </div>
+    <p class="screen-sub" data-t="findWorkersSub">काम के हिसाब से मजदूर चुनें</p>
+  </div>
+
+  <!-- Category cards -->
+  <p class="section-label" data-t="selectCategory">कौन सा काम चाहिए?</p>
+  <div class="worker-category-grid" id="cat-grid"></div>
+
+  <div class="divider"></div>
+
+  <p class="section-label" id="worker-list-label" data-t="availableWorkers">उपलब्ध मजदूर</p>
+  <div class="worker-list" id="worker-list"></div>
+
+  <!-- Post job FAB -->
+  <button class="post-job-fab" onclick="openModal('post-job')">
+    ＋ <span data-t="postJob">नौकरी पोस्ट करें</span>
+  </button>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     MODALS
+══════════════════════════════════════ -->
+
+<!-- Apply Modal -->
+<div class="modal-overlay" id="modal-apply">
+  <div class="modal-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title" data-t="applyTitle">Apply करें</div>
+    <div class="form-field">
+      <label data-t="yourName">आपका नाम</label>
+      <input type="text" data-t-ph="namePh" placeholder="जैसे: रमेश पाटिल">
+    </div>
+    <div class="form-field">
+      <label data-t="mobile">मोबाइल नंबर</label>
+      <input type="tel" placeholder="+91 98765 43210">
+    </div>
+    <div class="form-field">
+      <label data-t="yourCity">आपका शहर</label>
+      <input type="text" data-t-ph="cityPh" placeholder="जैसे: पुणे">
+    </div>
+    <button class="sheet-submit" onclick="submitApply()" data-t="sendApply">Apply भेजें ✓</button>
+    <button onclick="closeModal('apply')" style="width:100%;margin-top:10px;padding:12px;border:none;background:transparent;font-size:0.95rem;color:#999;cursor:pointer;font-family:inherit" data-t="cancel">रद्द करें</button>
+  </div>
+</div>
+
+<!-- Contact Worker Modal -->
+<div class="modal-overlay" id="modal-contact">
+  <div class="modal-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title" data-t="contactTitle">मजदूर से बात करें</div>
+    <div id="contact-worker-info" style="background:#F8F8F6;border-radius:14px;padding:16px;margin-bottom:20px;display:flex;gap:14px;align-items:center">
+      <div style="font-size:2.5rem" id="contact-avatar">👷</div>
+      <div>
+        <div style="font-size:1.1rem;font-weight:900" id="contact-name">-</div>
+        <div style="font-size:0.85rem;color:#777;margin-top:2px" id="contact-skill">-</div>
+        <div style="font-size:0.85rem;color:#1B8A3F;font-weight:700;margin-top:2px" id="contact-wage">-</div>
+      </div>
+    </div>
+    <div class="form-field">
+      <label data-t="companyName">आपकी कंपनी का नाम</label>
+      <input type="text" data-t-ph="companyPh" placeholder="जैसे: राज कंस्ट्रक्शन">
+    </div>
+    <div class="form-field">
+      <label data-t="mobile">मोबाइल नंबर</label>
+      <input type="tel" placeholder="+91 98765 43210">
+    </div>
+    <button class="sheet-submit" onclick="submitContact()" data-t="sendContact">संपर्क करें 📞</button>
+    <button onclick="closeModal('contact')" style="width:100%;margin-top:10px;padding:12px;border:none;background:transparent;font-size:0.95rem;color:#999;cursor:pointer;font-family:inherit" data-t="cancel">रद्द करें</button>
+  </div>
+</div>
+
+<!-- Post Job Modal -->
+<div class="modal-overlay" id="modal-post-job">
+  <div class="modal-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title" data-t="postJobTitle">नई नौकरी पोस्ट करें</div>
+    <div class="form-field">
+      <label data-t="jobName">नौकरी का नाम</label>
+      <input type="text" data-t-ph="jobNamePh" placeholder="जैसे: 10 मजदूर चाहिए">
+    </div>
+    <div class="form-row">
+      <div class="form-field">
+        <label data-t="skillNeeded">काम का प्रकार</label>
+        <select>
+          <option data-t="mason">राजमिस्त्री</option>
+          <option data-t="electric">बिजली</option>
+          <option data-t="plumber">प्लंबर</option>
+          <option data-t="paint">पेंटर</option>
+          <option data-t="carpenter">बढ़ई</option>
+          <option data-t="helper">हेल्पर</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label data-t="howMany">कितने मजदूर?</label>
+        <input type="number" placeholder="5" min="1">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-field">
+        <label data-t="dailyWage">मजदूरी (₹/दिन)</label>
+        <input type="number" placeholder="500">
+      </div>
+      <div class="form-field">
+        <label data-t="days">कितने दिन?</label>
+        <input type="number" placeholder="15">
+      </div>
+    </div>
+    <div class="form-field">
+      <label data-t="workCity">कहाँ काम होगा?</label>
+      <input type="text" data-t-ph="cityPh" placeholder="जैसे: पुणे">
+    </div>
+    <div class="form-field">
+      <label data-t="mobile">आपका मोबाइल</label>
+      <input type="tel" placeholder="+91 98765 43210">
+    </div>
+    <button class="sheet-submit" onclick="submitPostJob()" data-t="submitPost">पोस्ट करें ✓</button>
+    <button onclick="closeModal('post-job')" style="width:100%;margin-top:10px;padding:12px;border:none;background:transparent;font-size:0.95rem;color:#999;cursor:pointer;font-family:inherit" data-t="cancel">रद्द करें</button>
+  </div>
+</div>
+
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────
+const jobs = [
+  { id:1, skill:'mason',    emoji:'🧱', title:'राजमिस्त्री चाहिए',     titleEn:'Mason Required',      company:'राज कंस्ट्रक्शन', city:'पुणे',  workers:8,  days:30, wage:650, urgent:true  },
+  { id:2, skill:'electric', emoji:'⚡', title:'इलेक्ट्रीशियन चाहिए',   titleEn:'Electrician Required', company:'पावरटेक',         city:'मुंबई', workers:4,  days:45, wage:850, urgent:false },
+  { id:3, skill:'helper',   emoji:'💪', title:'हेल्पर चाहिए',          titleEn:'Helper Required',      company:'इवेंट प्रो',      city:'नाशिक', workers:20, days:2,  wage:500, urgent:true  },
+  { id:4, skill:'plumber',  emoji:'🔧', title:'प्लंबर चाहिए',          titleEn:'Plumber Required',     company:'सिटी बिल्डर्स',  city:'पुणे',  workers:3,  days:20, wage:750, urgent:false },
+  { id:5, skill:'paint',    emoji:'🎨', title:'पेंटर चाहिए',           titleEn:'Painter Required',     company:'न्यू होम्स',     city:'नाशिक', workers:5,  days:14, wage:700, urgent:false },
+  { id:6, skill:'carpenter',emoji:'🪵', title:'बढ़ई चाहिए',            titleEn:'Carpenter Required',   company:'वुड वर्क्स',     city:'पुणे',  workers:2,  days:10, wage:780, urgent:true  },
+  { id:7, skill:'mason',    emoji:'🧱', title:'सीनियर राजमिस्त्री',    titleEn:'Senior Mason',         company:'मेगा कंस्ट्रक्ट', city:'मुंबई',workers:6,  days:60, wage:700, urgent:false },
+];
+
+const workers = [
+  { id:1, skill:'mason',    skillLabel:'राजमिस्त्री', emoji:'👷', name:'रमेश पाटिल',   city:'पुणे',  exp:8,  wage:650, avail:true  },
+  { id:2, skill:'electric', skillLabel:'इलेक्ट्रीशियन',emoji:'⚡',name:'सुरेश कुमार',  city:'मुंबई', exp:7,  wage:850, avail:true  },
+  { id:3, skill:'plumber',  skillLabel:'प्लंबर',      emoji:'🔧', name:'सुनील कावरे',  city:'मुंबई', exp:10, wage:700, avail:false },
+  { id:4, skill:'paint',    skillLabel:'पेंटर',       emoji:'🎨', name:'दीपक शर्मा',   city:'नाशिक', exp:5,  wage:700, avail:true  },
+  { id:5, skill:'carpenter',skillLabel:'बढ़ई',        emoji:'🪵', name:'महेश जाधव',   city:'पुणे',  exp:12, wage:780, avail:true  },
+  { id:6, skill:'helper',   skillLabel:'हेल्पर',      emoji:'💪', name:'विजय राउत',   city:'नाशिक', exp:3,  wage:450, avail:true  },
+  { id:7, skill:'mason',    skillLabel:'राजमिस्त्री', emoji:'👷', name:'मंगेश शिंदे',  city:'पुणे',  exp:6,  wage:600, avail:true  },
+  { id:8, skill:'electric', skillLabel:'इलेक्ट्रीशियन',emoji:'⚡',name:'अनिल वर्मा',  city:'नाशिक', exp:4,  wage:800, avail:true  },
+];
+
+const categories = [
+  { skill:'mason',    emoji:'🧱', label:'राजमिस्त्री' },
+  { skill:'electric', emoji:'⚡', label:'इलेक्ट्रीशियन' },
+  { skill:'plumber',  emoji:'🔧', label:'प्लंबर' },
+  { skill:'paint',    emoji:'🎨', label:'पेंटर' },
+  { skill:'carpenter',emoji:'🪵', label:'बढ़ई' },
+  { skill:'helper',   emoji:'💪', label:'हेल्पर' },
+];
+
+// ── TRANSLATIONS ────────────────────────────────────────────────
+const T = {
+  en: {
+    welcome: 'Welcome to KaamSetu',
+    mainTitle: 'Need Work?<br><span>Find It Here.</span>',
+    mainSub: 'Who are you? Choose below.',
+    iAmWorker: "I'm a Worker",
+    workerDesc: 'Find Jobs — work today, earn today',
+    iAmContractor: "I'm a Contractor",
+    contractorDesc: 'Find Workers — skilled workers, available now',
+    statWorkers: 'Workers', statContractors: 'Contractors', statJobs: 'Jobs',
+    back: 'Back',
+    findJobs: 'Find Jobs', findJobsSub: 'Choose your skill and apply',
+    filterSkill: 'Select Work Type',
+    all:'All', mason:'Mason', electric:'Electrician', plumber:'Plumber',
+    paint:'Painter', carpenter:'Carpenter', helper:'Helper',
+    availableJobs: 'Available Jobs',
+    findWorkers: 'Find Workers', findWorkersSub: 'Select work type to see workers',
+    selectCategory: 'What work do you need?',
+    availableWorkers: 'Available Workers',
+    postJob: 'Post a Job',
+    applyTitle: 'Apply Now',
+    yourName: 'Your Name', namePh: 'e.g. Ramesh Patil',
+    mobile: 'Mobile Number',
+    yourCity: 'Your City', cityPh: 'e.g. Pune',
+    sendApply: 'Send Application ✓', cancel: 'Cancel',
+    contactTitle: 'Contact Worker',
+    companyName: "Your Company Name", companyPh: 'e.g. Raj Construction',
+    sendContact: 'Contact Now 📞',
+    postJobTitle: 'Post New Job',
+    jobName: 'Job Title', jobNamePh: 'e.g. Need 10 workers',
+    skillNeeded: 'Work Type', howMany: 'How many workers?',
+    dailyWage: 'Wage (₹/day)', days: 'How many days?',
+    workCity: 'Work Location',
+    submitPost: 'Post Job ✓',
+    urgent: 'Urgent', open: 'Open',
+    perDay: '/day', workersNeeded: 'workers needed',
+    duration: 'days', experience: 'yrs exp',
+    available: 'Available', busy: 'Busy',
+    toastApply: '✅ Application sent! Contractor will call you.',
+    toastContact: '✅ Request sent! Worker will call you.',
+    toastPost: '✅ Job posted! Workers will contact you soon.',
+    expLabel: 'Exp', wageLabel: 'Wage',
+  },
+  hi: {
+    welcome: 'KaamSetu में आपका स्वागत है',
+    mainTitle: 'काम चाहिए?<br><span>यहाँ मिलेगा।</span>',
+    mainSub: 'आप कौन हैं? नीचे चुनें।',
+    iAmWorker: 'मैं मजदूर हूँ',
+    workerDesc: 'नौकरी ढूंढें — आज का काम, आज की मजदूरी',
+    iAmContractor: 'मैं ठेकेदार हूँ',
+    contractorDesc: 'मजदूर ढूंढें — कुशल कामगार, तुरंत उपलब्ध',
+    statWorkers: 'मजदूर', statContractors: 'ठेकेदार', statJobs: 'नौकरियां',
+    back: 'वापस',
+    findJobs: 'नौकरियां देखें', findJobsSub: 'अपना काम चुनें और Apply करें',
+    filterSkill: 'काम का प्रकार चुनें',
+    all:'सभी', mason:'राजमिस्त्री', electric:'बिजली', plumber:'प्लंबर',
+    paint:'पेंटर', carpenter:'बढ़ई', helper:'हेल्पर',
+    availableJobs: 'उपलब्ध नौकरियां',
+    findWorkers: 'मजदूर देखें', findWorkersSub: 'काम के हिसाब से मजदूर चुनें',
+    selectCategory: 'कौन सा काम चाहिए?',
+    availableWorkers: 'उपलब्ध मजदूर',
+    postJob: 'नौकरी पोस्ट करें',
+    applyTitle: 'Apply करें',
+    yourName: 'आपका नाम', namePh: 'जैसे: रमेश पाटिल',
+    mobile: 'मोबाइल नंबर',
+    yourCity: 'आपका शहर', cityPh: 'जैसे: पुणे',
+    sendApply: 'Apply भेजें ✓', cancel: 'रद्द करें',
+    contactTitle: 'मजदूर से बात करें',
+    companyName: 'आपकी कंपनी का नाम', companyPh: 'जैसे: राज कंस्ट्रक्शन',
+    sendContact: 'संपर्क करें 📞',
+    postJobTitle: 'नई नौकरी पोस्ट करें',
+    jobName: 'नौकरी का नाम', jobNamePh: 'जैसे: 10 मजदूर चाहिए',
+    skillNeeded: 'काम का प्रकार', howMany: 'कितने मजदूर?',
+    dailyWage: 'मजदूरी (₹/दिन)', days: 'कितने दिन?',
+    workCity: 'कहाँ काम होगा?',
+    submitPost: 'पोस्ट करें ✓',
+    urgent: 'जरूरी', open: 'खुला',
+    perDay: '/दिन', workersNeeded: 'मजदूर चाहिए',
+    duration: 'दिन', experience: 'साल',
+    available: 'उपलब्ध', busy: 'व्यस्त',
+    toastApply: '✅ Apply हो गया! ठेकेदार आपको call करेगा।',
+    toastContact: '✅ Request गई! मजदूर आपको call करेगा।',
+    toastPost: '✅ नौकरी पोस्ट हो गई! मजदूर जल्द संपर्क करेंगे।',
+    expLabel: 'अनुभव', wageLabel: 'मजदूरी',
+  },
+  mr: {
+    welcome: 'KaamSetu मध्ये आपले स्वागत',
+    mainTitle: 'काम हवे?<br><span>इथे मिळेल.</span>',
+    mainSub: 'तुम्ही कोण आहात? खाली निवडा.',
+    iAmWorker: 'मी कामगार आहे',
+    workerDesc: 'नोकरी शोधा — आजचे काम, आजची मजुरी',
+    iAmContractor: 'मी कंत्राटदार आहे',
+    contractorDesc: 'कामगार शोधा — कुशल कामगार, लगेच उपलब्ध',
+    statWorkers: 'कामगार', statContractors: 'कंत्राटदार', statJobs: 'नोकऱ्या',
+    back: 'मागे',
+    findJobs: 'नोकऱ्या पहा', findJobsSub: 'तुमचे काम निवडा आणि Apply करा',
+    filterSkill: 'कामाचा प्रकार निवडा',
+    all:'सर्व', mason:'गवंडी', electric:'इलेक्ट्रिशियन', plumber:'प्लंबर',
+    paint:'पेंटर', carpenter:'सुतार', helper:'हेल्पर',
+    availableJobs: 'उपलब्ध नोकऱ्या',
+    findWorkers: 'कामगार पहा', findWorkersSub: 'कामाप्रमाणे कामगार निवडा',
+    selectCategory: 'कोणते काम हवे?',
+    availableWorkers: 'उपलब्ध कामगार',
+    postJob: 'नोकरी पोस्ट करा',
+    applyTitle: 'Apply करा',
+    yourName: 'तुमचे नाव', namePh: 'उदा: रमेश पाटील',
+    mobile: 'मोबाइल नंबर',
+    yourCity: 'तुमचे शहर', cityPh: 'उदा: पुणे',
+    sendApply: 'Apply पाठवा ✓', cancel: 'रद्द करा',
+    contactTitle: 'कामगाराशी बोला',
+    companyName: 'तुमच्या कंपनीचे नाव', companyPh: 'उदा: राज कंस्ट्रक्शन',
+    sendContact: 'संपर्क करा 📞',
+    postJobTitle: 'नवीन नोकरी पोस्ट करा',
+    jobName: 'नोकरीचे नाव', jobNamePh: 'उदा: 10 कामगार हवे',
+    skillNeeded: 'कामाचा प्रकार', howMany: 'किती कामगार?',
+    dailyWage: 'मजुरी (₹/दिवस)', days: 'किती दिवस?',
+    workCity: 'काम कुठे होणार?',
+    submitPost: 'पोस्ट करा ✓',
+    urgent: 'तातडीचे', open: 'खुले',
+    perDay: '/दिवस', workersNeeded: 'कामगार हवे',
+    duration: 'दिवस', experience: 'वर्षे',
+    available: 'उपलब्ध', busy: 'व्यस्त',
+    toastApply: '✅ Apply झाले! कंत्राटदार तुम्हाला call करेल.',
+    toastContact: '✅ Request गेली! कामगार तुम्हाला call करेल.',
+    toastPost: '✅ नोकरी पोस्ट झाली! कामगार लवकरच संपर्क करतील.',
+    expLabel: 'अनुभव', wageLabel: 'मजुरी',
+  }
+};
+
+let lang = 'hi';
+
+// ── LANGUAGE ─────────────────────────────────────────────────────
+function setLang(l, btn) {
+  lang = l;
+  document.querySelectorAll('.lang-pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyTranslations();
+  renderJobs(currentFilter);
+  renderCategories();
+  renderWorkers(currentCategory);
+}
+
+function t(key) { return T[lang][key] || T['hi'][key] || key; }
+
+function applyTranslations() {
+  document.querySelectorAll('[data-t]').forEach(el => {
+    const key = el.getAttribute('data-t');
+    const val = T[lang][key];
+    if (val !== undefined) el.innerHTML = val;
+  });
+  document.querySelectorAll('[data-t-ph]').forEach(el => {
+    const key = el.getAttribute('data-t-ph');
+    const val = T[lang][key];
+    if (val) el.placeholder = val;
+  });
+  document.querySelectorAll('.lang-pill').forEach(b => {
+    if (b.textContent.includes('EN') || b.textContent === 'EN') { /* keep */ }
+  });
+}
+
+// ── SCREEN NAV ───────────────────────────────────────────────────
+function showScreen(name) {
+  document.getElementById('screen-home').classList.remove('active');
+  document.getElementById('screen-worker').classList.remove('active');
+  document.getElementById('screen-contractor').classList.remove('active');
+  document.getElementById('screen-' + name).classList.add('active');
+  window.scrollTo(0, 0);
+  if (name === 'worker') renderJobs('all');
+  if (name === 'contractor') { renderCategories(); renderWorkers('all'); }
+}
+
+function showHome() {
+  document.getElementById('screen-home').classList.add('active');
+  document.getElementById('screen-worker').classList.remove('active');
+  document.getElementById('screen-contractor').classList.remove('active');
+  window.scrollTo(0, 0);
+}
+
+// ── JOBS (WORKER) ────────────────────────────────────────────────
+let currentFilter = 'all';
+
+function filterJobs(skill, btn) {
+  currentFilter = skill;
+  document.querySelectorAll('#skill-chips .chip').forEach(c => c.classList.remove('selected'));
+  btn.classList.add('selected');
+  renderJobs(skill);
+}
+
+function renderJobs(skill) {
+  const list = document.getElementById('jobs-list');
+  const filtered = skill === 'all' ? jobs : jobs.filter(j => j.skill === skill);
+  if (!filtered.length) {
+    list.innerHTML = `<div class="empty-state"><div>🔍</div><p>${lang==='en'?'No jobs found':'कोई नौकरी नहीं मिली'}</p></div>`;
+    return;
+  }
+  list.innerHTML = filtered.map(job => `
+    <div class="job-card">
+      <div class="job-top">
+        <div>
+          <div class="job-name">${job.emoji} ${lang === 'en' ? job.titleEn : job.title}</div>
+          <div class="job-company">📍 ${job.company} · ${job.city}</div>
+        </div>
+        <span class="urgency-badge ${job.urgent ? 'urgent' : 'open'}">${job.urgent ? t('urgent') : t('open')}</span>
+      </div>
+      <div class="job-details">
+        <div class="job-detail-item">
+          <span class="detail-icon">👥</span>
+          <div class="detail-text">
+            <div class="detail-label">${t('workersNeeded')}</div>
+            <div class="detail-val">${job.workers}</div>
+          </div>
+        </div>
+        <div class="job-detail-item">
+          <span class="detail-icon">📅</span>
+          <div class="detail-text">
+            <div class="detail-label">${t('days')}</div>
+            <div class="detail-val">${job.days} ${t('duration')}</div>
+          </div>
+        </div>
+      </div>
+      <div class="wage-row">
+        <div>
+          <div class="wage-amount">₹${job.wage}<span class="wage-per">${t('perDay')}</span></div>
+        </div>
+        <button class="apply-btn" onclick="openApply(${job.id})">${t('sendApply').replace(' ✓','') + ' →'}</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── CATEGORIES (CONTRACTOR) ──────────────────────────────────────
+let currentCategory = 'all';
+
+function renderCategories() {
+  const grid = document.getElementById('cat-grid');
+  grid.innerHTML = categories.map(cat => {
+    const count = workers.filter(w => w.skill === cat.skill && w.avail).length;
+    const label = lang === 'en' ? T.en[cat.skill] : (lang === 'mr' ? T.mr[cat.skill] : T.hi[cat.skill]);
+    return `
+      <div class="worker-cat-card ${currentCategory === cat.skill ? 'selected' : ''}" onclick="selectCategory('${cat.skill}', this)">
+        <div class="cat-emoji">${cat.emoji}</div>
+        <div class="cat-name">${label}</div>
+        <div class="cat-count">${count} ${t('available')}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function selectCategory(skill, el) {
+  currentCategory = skill;
+  document.querySelectorAll('.worker-cat-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  renderWorkers(skill);
+}
+
+// ── WORKERS LIST ─────────────────────────────────────────────────
+function renderWorkers(skill) {
+  const list = document.getElementById('worker-list');
+  const filtered = skill === 'all' ? workers : workers.filter(w => w.skill === skill);
+  if (!filtered.length) {
+    list.innerHTML = `<div class="empty-state"><div>👷</div><p>${lang==='en'?'No workers found':'कोई मजदूर नहीं मिला'}</p></div>`;
+    return;
+  }
+  list.innerHTML = filtered.map(w => {
+    const skillLabel = lang === 'en' ? T.en[w.skill] : (lang === 'mr' ? T.mr[w.skill] : T.hi[w.skill]);
+    return `
+      <div class="worker-card">
+        <div class="worker-avatar-big">${w.emoji}</div>
+        <div class="worker-info">
+          <div class="worker-name-big">${w.name}</div>
+          <div class="worker-skill-tag">${skillLabel}</div>
+          <div class="worker-meta">
+            <span class="w-meta-item"><span class="avail-dot" style="background:${w.avail?'#1B8A3F':'#ccc'}"></span> ${w.avail ? t('available') : t('busy')}</span>
+            <span class="w-meta-item">📍 ${w.city}</span>
+            <span class="w-meta-item">⏱ ${w.exp} ${t('experience')}</span>
+          </div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div style="font-size:1rem;font-weight:900;color:#1B8A3F;margin-bottom:8px">₹${w.wage}<br><span style="font-size:0.72rem;color:#aaa;font-weight:400">${t('perDay')}</span></div>
+          <button class="contact-btn" onclick="openContact(${w.id})">${t('sendContact').split(' ')[0]}</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ── MODAL HELPERS ────────────────────────────────────────────────
+let selectedJobId = null;
+let selectedWorkerId = null;
+
+function openApply(jobId) {
+  selectedJobId = jobId;
+  openModal('apply');
+}
+
+function openContact(workerId) {
+  selectedWorkerId = workerId;
+  const w = workers.find(x => x.id === workerId);
+  if (w) {
+    document.getElementById('contact-avatar').textContent = w.emoji;
+    document.getElementById('contact-name').textContent = w.name;
+    const skillLabel = lang === 'en' ? T.en[w.skill] : (lang === 'mr' ? T.mr[w.skill] : T.hi[w.skill]);
+    document.getElementById('contact-skill').textContent = skillLabel;
+    document.getElementById('contact-wage').textContent = '₹' + w.wage + ' ' + t('perDay');
+  }
+  openModal('contact');
+}
+
+function openModal(id) {
+  document.getElementById('modal-' + id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+  applyTranslations();
+}
+function closeModal(id) {
+  document.getElementById('modal-' + id).classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Close on backdrop click
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', function(e) {
+    if (e.target === this) { this.classList.remove('open'); document.body.style.overflow = ''; }
+  });
+});
+
+function submitApply() {
+  closeModal('apply');
+  showToast(t('toastApply'));
+}
+function submitContact() {
+  closeModal('contact');
+  showToast(t('toastContact'));
+}
+function submitPostJob() {
+  closeModal('post-job');
+  showToast(t('toastPost'));
+}
+
+function showToast(msg) {
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+}
+
+// ── INIT ─────────────────────────────────────────────────────────
+applyTranslations();
+</script>
+</body>
+</html>
